@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bing Xu — Senior Data Scientist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/avatar.webp" type="image/webp" fetchpriority="high">
+<style>
+  :root{
+    --bg:#0B0E14;
+    --bg-2:#0d111a;
+    --panel:rgba(255,255,255,0.025);
+    --panel-border:rgba(255,255,255,0.07);
+    --ink:#E6EDF5;
+    --ink-dim:#8a94a6;
+    --ink-faint:#5b6478;
+    --cyan: oklch(0.86 0.14 200);
+    --cyan-deep: oklch(0.72 0.14 200);
+    --purple: oklch(0.74 0.17 300);
+    --rule: rgba(255,255,255,0.06);
+    --mono:'JetBrains Mono', ui-monospace, Menlo, monospace;
+    --sans:'Inter', system-ui, sans-serif;
+    --display:'Space Grotesk', 'Inter', system-ui, sans-serif;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--cyan);color:#0B0E14}
+
+  /* animated grid background */
+  .bg-layer{
+    position:fixed;inset:0;z-index:-2;pointer-events:none;
+    background:
+      radial-gradient(1200px 800px at 20% -10%, rgba(0, 200, 220, 0.08), transparent 60%),
+      radial-gradient(1000px 700px at 100% 10%, rgba(160, 90, 230, 0.06), transparent 60%),
+      linear-gradient(180deg, #0B0E14 0%, #0a0d13 100%);
+  }
+  .grid-layer{
+    position:fixed;inset:-2px;z-index:-1;pointer-events:none;opacity:.35;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 100% 70% at 50% 20%, #000 40%, transparent 95%);
+    -webkit-mask-image: radial-gradient(ellipse 100% 70% at 50% 20%, #000 40%, transparent 95%);
+    animation: drift 40s linear infinite;
+    will-change: background-position;
+  }
+  @keyframes drift{
+    from{background-position:0 0, 0 0}
+    to{background-position:560px 0, 0 560px}
+  }
+  .scan{
+    position:fixed;left:0;right:0;height:1px;top:0;z-index:-1;
+    background:linear-gradient(90deg, transparent, var(--cyan), transparent);
+    opacity:.35;
+    animation: scan 9s ease-in-out infinite;
+    box-shadow:0 0 24px var(--cyan);
+    will-change: transform, opacity;
+  }
+  @keyframes scan{
+    0%,100%{transform:translateY(0);opacity:0}
+    10%{opacity:.4}
+    50%{transform:translateY(100vh);opacity:.2}
+    60%{opacity:0}
+  }
+
+  /* layout */
+  .wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+  /* nav */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    backdrop-filter:blur(14px) saturate(1.4);
+    -webkit-backdrop-filter:blur(14px) saturate(1.4);
+    background:rgba(11,14,20,0.55);
+    border-bottom:1px solid var(--rule);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{font-family:var(--mono);font-weight:500;letter-spacing:0.02em;display:flex;align-items:center;gap:10px;color:var(--ink)}
+  .logo .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:pulse 2.2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:.9;transform:scale(1)}50%{opacity:.4;transform:scale(.85)}}
+  .nav-links{display:flex;gap:28px;font-family:var(--mono);font-size:13px;color:var(--ink-dim)}
+  .nav-links a{transition:color .2s}
+  .nav-links a:hover{color:var(--cyan)}
+  .nav-links .slash{color:var(--ink-faint)}
+  @media (max-width:720px){.nav-links{display:none}}
+
+  /* tiny label */
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--cyan-deep);display:inline-flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:24px;height:1px;background:var(--cyan-deep)}
+
+  /* HERO */
+  #hero{padding:160px 0 110px;position:relative}
+  .hero-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:64px;align-items:center}
+  @media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:48px}}
+  .h1{
+    font-family:var(--display);font-weight:500;font-size:clamp(52px,8vw,104px);
+    line-height:0.98;letter-spacing:-0.03em;margin-top:18px;
+  }
+  .h1 .role{
+    display:block;margin-top:14px;
+    font-family:var(--display);font-weight:500;
+    font-size:clamp(22px,2.6vw,34px);
+    letter-spacing:-0.01em;color:var(--ink);
+  }
+  .h1 .accent{color:var(--cyan);font-style:italic;font-weight:400}
+  .sub{margin-top:22px;color:var(--ink-dim);font-size:17px;max-width:560px;line-height:1.6}
+  .sub b{color:var(--ink);font-weight:500}
+
+  .terminal{
+    margin-top:32px;font-family:var(--mono);font-size:13.5px;
+    display:inline-flex;align-items:center;gap:10px;
+    padding:12px 16px;border:1px solid var(--panel-border);
+    background:rgba(255,255,255,0.02);border-radius:8px;
+    color:var(--ink);
+  }
+  .terminal .prompt{color:var(--cyan)}
+  .caret{display:inline-block;width:8px;height:1em;background:var(--cyan);margin-left:2px;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+
+  .hero-meta{margin-top:36px;display:flex;gap:24px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--ink-faint);letter-spacing:.08em;text-transform:uppercase}
+  .hero-meta span b{color:var(--ink-dim);font-weight:400}
+
+  /* photo panel */
+  .photo-panel{
+    position:relative;aspect-ratio:4/5;max-width:380px;justify-self:end;width:100%;
+    border:1px solid var(--panel-border);border-radius:14px;overflow:hidden;
+    background:
+      linear-gradient(180deg, rgba(0,220,240,0.06), transparent 40%),
+      var(--panel);
+    box-shadow: 0 30px 80px -30px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  @media (max-width:900px){.photo-panel{justify-self:start;max-width:320px}}
+  .photo-panel img{width:100%;height:100%;object-fit:cover;filter:grayscale(0.15) contrast(1.02)}
+  .photo-corner{position:absolute;width:16px;height:16px;border:1px solid var(--cyan);opacity:.7}
+  .photo-corner.tl{top:10px;left:10px;border-right:none;border-bottom:none}
+  .photo-corner.tr{top:10px;right:10px;border-left:none;border-bottom:none}
+  .photo-corner.bl{bottom:10px;left:10px;border-right:none;border-top:none}
+  .photo-corner.br{bottom:10px;right:10px;border-left:none;border-top:none}
+  .photo-tag{
+    position:absolute;left:12px;bottom:12px;right:12px;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--ink-dim);
+    display:flex;justify-content:space-between;
+    background:rgba(11,14,20,0.55);backdrop-filter:blur(6px);
+    padding:8px 10px;border-radius:6px;border:1px solid var(--panel-border);
+  }
+  .photo-tag .live{color:var(--cyan)}
+  .photo-tag .live::before{content:"●";margin-right:6px;font-size:8px;vertical-align:middle}
+
+  /* section */
+  section{padding:110px 0;position:relative}
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:56px;gap:24px;flex-wrap:wrap}
+  .section-title{
+    font-family:var(--display);font-weight:500;font-size:clamp(32px,4.2vw,52px);
+    letter-spacing:-0.02em;line-height:1.05;
+  }
+  .section-title .idx{color:var(--cyan);font-family:var(--mono);font-weight:400;font-size:0.5em;margin-right:14px;vertical-align:0.35em;letter-spacing:0}
+  .section-kicker{font-family:var(--mono);font-size:12px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase}
+
+  /* about */
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+  @media (max-width:820px){.about-grid{grid-template-columns:1fr;gap:32px}}
+  .about-body p{font-size:17.5px;line-height:1.65;color:var(--ink);max-width:560px;text-wrap:pretty}
+  .about-body p + p{margin-top:16px;color:var(--ink-dim)}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:420px}
+  .stat{
+    border:1px solid var(--panel-border);border-radius:10px;padding:20px;
+    background:var(--panel);
+  }
+  .stat .n{font-family:var(--display);font-size:32px;font-weight:500;letter-spacing:-0.02em;color:var(--ink)}
+  .stat .n .unit{font-size:18px;color:var(--cyan);margin-left:2px}
+  .stat .l{font-family:var(--mono);font-size:11.5px;color:var(--ink-dim);letter-spacing:.08em;text-transform:uppercase;margin-top:6px}
+
+  /* experience */
+  .timeline{border-top:1px solid var(--rule)}
+  .exp{
+    display:grid;grid-template-columns:180px 1fr auto;gap:32px;align-items:baseline;
+    padding:28px 0;border-bottom:1px solid var(--rule);
+    transition:background .3s, padding-left .3s;
+    position:relative;
+  }
+  .exp::before{
+    content:"";position:absolute;left:-14px;top:42px;width:8px;height:8px;border-radius:50%;
+    background:var(--bg);border:1px solid var(--ink-faint);transition:all .3s;
+  }
+  .exp:hover{padding-left:14px;background:rgba(255,255,255,0.015)}
+  .exp:hover::before{background:var(--cyan);border-color:var(--cyan);box-shadow:0 0 12px var(--cyan)}
+  .exp-date{font-family:var(--mono);font-size:12.5px;color:var(--ink-faint);letter-spacing:.04em}
+  .exp h3{font-family:var(--display);font-size:24px;font-weight:500;letter-spacing:-0.01em}
+  .exp .company{color:var(--ink-dim);margin-top:4px;font-size:14px}
+  .exp .company .loc{color:var(--ink-faint);font-family:var(--mono);font-size:12px;margin-left:8px}
+  .exp .role-tag{font-family:var(--mono);font-size:11px;color:var(--cyan-deep);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+  @media (max-width:720px){
+    .exp{grid-template-columns:1fr;gap:6px}
+    .exp .role-tag{justify-self:start}
+  }
+
+  /* bento projects */
+  .bento{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:18px;grid-auto-rows:1fr;
+  }
+  .card{
+    position:relative;overflow:hidden;
+    border:1px solid var(--panel-border);border-radius:16px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01) 40%, transparent),
+      rgba(255,255,255,0.015);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    padding:24px;display:flex;flex-direction:column;justify-content:space-between;
+    transition:transform .4s cubic-bezier(.2,.7,.2,1), border-color .3s, background .3s;
+  }
+  .card::before{
+    content:"";position:absolute;inset:0;border-radius:16px;pointer-events:none;
+    background:radial-gradient(600px circle at var(--mx,50%) var(--my,0%), rgba(0,220,240,0.08), transparent 40%);
+    opacity:0;transition:opacity .3s;
+  }
+  .card:hover{transform:translateY(-4px);border-color:rgba(0,220,240,0.35)}
+  .card:hover::before{opacity:1}
+  .card:hover .arrow{transform:translate(3px,-3px);color:var(--cyan)}
+  .card .arrow{
+    position:absolute;top:20px;right:22px;font-family:var(--mono);font-size:14px;color:var(--ink-faint);
+    transition:transform .3s,color .3s;
+  }
+  .art{height:150px;display:flex;align-items:center;justify-content:center;margin:-4px 0 8px}
+  .art svg{width:100%;height:100%;max-width:240px}
+  .card h3{font-family:var(--display);font-size:22px;font-weight:500;letter-spacing:-0.01em;margin-bottom:8px}
+  .card .p{color:var(--ink-dim);font-size:14px;line-height:1.5;margin-bottom:14px}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+  .tag{font-family:var(--mono);font-size:11px;color:var(--ink-dim);padding:4px 8px;border:1px solid var(--panel-border);border-radius:999px;background:rgba(255,255,255,0.02)}
+
+  @media (max-width:900px){.bento{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:600px){.bento{grid-template-columns:1fr}}
+
+  /* skills */
+  .skill-grid{display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start}
+  @media (max-width:820px){.skill-grid{grid-template-columns:1fr;gap:24px}}
+  .skill-cat{
+    font-family:var(--mono);font-size:12px;color:var(--ink-faint);letter-spacing:.1em;text-transform:uppercase;
+    padding-top:6px;
+  }
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{
+    font-family:var(--mono);font-size:13px;padding:9px 14px;border-radius:8px;
+    border:1px solid var(--panel-border);background:var(--panel);color:var(--ink);
+    transition:all .25s;cursor:default;
+  }
+  .chip:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-1px)}
+  .chip .lvl{color:var(--ink-faint);margin-left:8px;font-size:11px}
+  .skill-row{padding:24px 0;border-top:1px solid var(--rule);display:grid;grid-template-columns:240px 1fr;gap:48px}
+  @media (max-width:820px){.skill-row{grid-template-columns:1fr;gap:14px}}
+
+  /* footer */
+  footer{padding:100px 0 50px;border-top:1px solid var(--rule);margin-top:40px}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;align-items:start}
+  @media (max-width:820px){.foot-grid{grid-template-columns:1fr;gap:32px}}
+  .foot h2{font-family:var(--display);font-size:clamp(36px,5vw,64px);font-weight:500;letter-spacing:-0.02em;line-height:1.02}
+  .foot h2 .accent{color:var(--cyan);font-style:italic;font-weight:400}
+  .foot .sub-line{color:var(--ink-dim);margin-top:14px;max-width:500px}
+  .foot-col h4{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px}
+  .foot-col a, .foot-col span{display:block;padding:6px 0;color:var(--ink);font-size:15px}
+  .foot-col a{transition:color .2s,transform .2s}
+  .foot-col a:hover{color:var(--cyan);transform:translateX(2px)}
+  .foot-term{
+    margin-top:40px;font-family:var(--mono);font-size:12.5px;color:var(--ink-dim);
+    border:1px solid var(--panel-border);border-radius:10px;padding:14px 18px;
+    background:var(--panel);
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  }
+  .foot-term .p{color:var(--cyan)}
+  .foot-bottom{margin-top:48px;padding-top:24px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);letter-spacing:.06em}
+
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1)}
+  .reveal.on{opacity:1;transform:none}
+
+  /* Tweaks panel */
+  #tweaks{
+    position:fixed;bottom:24px;right:24px;z-index:100;width:280px;
+    background:rgba(11,14,20,0.92);backdrop-filter:blur(12px);
+    border:1px solid var(--panel-border);border-radius:12px;
+    font-family:var(--mono);color:var(--ink);
+    box-shadow:0 20px 60px -20px rgba(0,0,0,.8);
+    display:none;overflow:hidden;
+  }
+  #tweaks.on{display:block}
+  #tweaks header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 14px;border-bottom:1px solid var(--rule);
+    font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)
+  }
+  #tweaks header .dotline{display:flex;align-items:center;gap:8px}
+  #tweaks header .dotline::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+  #tweaks .body{padding:14px;display:flex;flex-direction:column;gap:14px}
+  #tweaks .row{display:flex;flex-direction:column;gap:6px}
+  #tweaks label{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+  #tweaks .swatches{display:flex;gap:6px;flex-wrap:wrap}
+  #tweaks .sw{
+    width:28px;height:28px;border-radius:6px;border:1px solid var(--panel-border);cursor:pointer;
+    transition:transform .15s, border-color .15s;
+  }
+  #tweaks .sw:hover{transform:scale(1.1)}
+  #tweaks .sw.active{border-color:var(--ink);box-shadow:0 0 0 2px rgba(255,255,255,0.15)}
+  #tweaks .seg{display:flex;border:1px solid var(--panel-border);border-radius:8px;overflow:hidden}
+  #tweaks .seg button{
+    flex:1;background:transparent;border:0;padding:8px 6px;color:var(--ink-dim);
+    font-family:var(--mono);font-size:11px;cursor:pointer;transition:all .2s;
+    border-right:1px solid var(--panel-border);
+  }
+  #tweaks .seg button:last-child{border-right:0}
+  #tweaks .seg button.active{background:var(--cyan);color:#0B0E14}
+  #tweaks .toggle{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:8px 10px;border:1px solid var(--panel-border);border-radius:8px;
+    font-size:12px;color:var(--ink);cursor:pointer;user-select:none;
+  }
+  #tweaks .toggle .pill{width:30px;height:16px;border-radius:999px;background:rgba(255,255,255,0.1);position:relative;transition:background .2s}
+  #tweaks .toggle .pill::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:var(--ink-dim);transition:all .2s}
+  #tweaks .toggle.on .pill{background:var(--cyan)}
+  #tweaks .toggle.on .pill::after{left:16px;background:#0B0E14}
+
+  /* theme hooks */
+  body[data-accent="cyan"]   { --cyan: oklch(0.86 0.14 200); --cyan-deep: oklch(0.72 0.14 200); }
+  body[data-accent="purple"] { --cyan: oklch(0.78 0.17 300); --cyan-deep: oklch(0.66 0.17 300); }
+  body[data-accent="green"]  { --cyan: oklch(0.85 0.17 155); --cyan-deep: oklch(0.70 0.17 155); }
+  body[data-accent="amber"]  { --cyan: oklch(0.85 0.15 75);  --cyan-deep: oklch(0.72 0.15 75); }
+  body[data-accent="rose"]   { --cyan: oklch(0.80 0.15 15);  --cyan-deep: oklch(0.68 0.15 15); }
+
+  body[data-display="space"]  { --display:'Space Grotesk','Inter',system-ui,sans-serif; }
+  body[data-display="inter"]  { --display:'Inter',system-ui,sans-serif; }
+  body[data-display="mono"]   { --display:'JetBrains Mono',ui-monospace,monospace; }
+
+  body[data-grid="off"] .grid-layer{display:none}
+  body[data-grid="off"] .scan{display:none}
+
+  body[data-density="compact"] section{padding:72px 0}
+  body[data-density="compact"] #hero{padding:120px 0 70px}
+  body[data-density="roomy"] section{padding:140px 0}
+
+  @media (prefers-reduced-motion: reduce) {
+    .grid-layer, .scan, .logo .dot { animation: none; }
+    .reveal { transition: none; opacity: 1; transform: none; }
+    .card, .chip, .nav-links a, .foot-col a { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="grid-layer"></div>
+<div class="scan"></div>
+
+<!-- Tweaks -->
+<aside id="tweaks" aria-hidden="true">
+  <header>
+    <span class="dotline">Tweaks</span>
+    <span id="tw-close" style="cursor:pointer;color:var(--ink-faint)">✕</span>
+  </header>
+  <div class="body">
+    <div class="row">
+      <label>Accent</label>
+      <div class="swatches" id="tw-accent">
+        <div class="sw" data-v="cyan"   style="background:oklch(0.86 0.14 200)"></div>
+        <div class="sw" data-v="purple" style="background:oklch(0.78 0.17 300)"></div>
+        <div class="sw" data-v="green"  style="background:oklch(0.85 0.17 155)"></div>
+        <div class="sw" data-v="amber"  style="background:oklch(0.85 0.15 75)"></div>
+        <div class="sw" data-v="rose"   style="background:oklch(0.80 0.15 15)"></div>
+      </div>
+    </div>
+    <div class="row">
+      <label>Display font</label>
+      <div class="seg" id="tw-display">
+        <button data-v="space">Space</button>
+        <button data-v="inter">Inter</button>
+        <button data-v="mono">Mono</button>
+      </div>
+    </div>
+    <div class="row">
+      <label>Density</label>
+      <div class="seg" id="tw-density">
+        <button data-v="compact">Compact</button>
+        <button data-v="normal">Normal</button>
+        <button data-v="roomy">Roomy</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="toggle" id="tw-grid"><span>Animated grid</span><span class="pill"></span></div>
+    </div>
+  </div>
+</aside>
+
+<nav>
+  <div class="wrap nav-inner">
+    <a href="#" class="logo"><span class="dot"></span>BX.LOG()</a>
+    <div class="nav-links">
+      <a href="#about"><span class="slash">/</span>about</a>
+      <a href="#experience"><span class="slash">/</span>experience</a>
+      <a href="#projects"><span class="slash">/</span>projects</a>
+      <a href="#skills"><span class="slash">/</span>skills</a>
+      <a href="#contact"><span class="slash">/</span>contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Beijing, CN</span>
+      <h1 class="h1">Bing Xu<span class="role">Senior Data Scientist</span></h1>
+      <p class="sub">I transform complex data into strategic business impact. <b>7+ years</b> specializing in <b>Ads Monetization</b> and <b>Subscription Growth</b> through deep analytics and actionable insights.</p>
+      <div class="terminal">
+        <span class="prompt">&gt;</span>
+        <span id="type"></span><span class="caret"></span>
+      </div>
+      <div class="hero-meta">
+        <!-- <span><b>07+</b> yrs experience</span>
+        <span><b>35+</b> A/B tests shipped</span>
+        <span><b>$8.6M</b> budgets optimized</span> -->
+      </div>
+    </div>
+
+    <div class="photo-panel">
+      <picture>
+        <source srcset="assets/avatar.webp" type="image/webp">
+        <img src="assets/avatar_resized.jpg" alt="Bing Xu" width="760" height="759" fetchpriority="high" decoding="async">
+      </picture>
+      <span class="photo-corner tl"></span>
+      <span class="photo-corner tr"></span>
+      <span class="photo-corner bl"></span>
+      <span class="photo-corner br"></span>
+      <div class="photo-tag">
+        <span>ID — 0602 / BX</span>
+        <span class="live">LIVE</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2 class="section-title"><span class="idx">01</span>About</h2>
+      <span class="section-kicker">// bridging data × decisions</span>
+    </div>
+    <div class="about-grid">
+      <div class="about-body reveal">
+        <p>A Senior Data Scientist with a passion for bridging the gap between raw data and strategic business impact.</p>
+        <p>With 7+ years in Ads Monetization and Subscription Growth, I specialize in end-to-end problem solving — utilizing advanced analytics as a powerful tool to drive measurable ROI. Beyond the code, I am a travel enthusiast and a data storyteller, finding meaningful patterns both in server logs and across the world map.</p>
+      </div>
+      <div class="stats reveal">
+        <div class="stat"><div class="n">0.79<span class="unit"></span></div><div class="l">WWT → Renewal ρ</div></div>
+        <div class="stat"><div class="n">92.2<span class="unit">%</span></div><div class="l">CTR lift, A/B test</div></div>
+        <div class="stat"><div class="n">25.6<span class="unit">%</span></div><div class="l">MAPE reduction</div></div>
+        <div class="stat"><div class="n">11.3<span class="unit">pp</span></div><div class="l">On-Target Reach, age</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2 class="section-title"><span class="idx">02</span>Experience</h2>
+      <span class="section-kicker">// 2018 → present</span>
+    </div>
+    <div class="timeline reveal">
+      <div class="exp">
+        <span class="exp-date">2021.11 — 2025.09</span>
+        <div>
+          <h3>Senior Data Scientist</h3>
+          <p class="company">Disney+ Hotstar<span class="loc">Beijing, CN</span></p>
+        </div>
+        <span class="role-tag">Content · Ads</span>
+      </div>
+      <div class="exp">
+        <span class="exp-date">2019.09 — 2021.10</span>
+        <div>
+          <h3>Data Scientist II</h3>
+          <p class="company">Yahoo<span class="loc">Sunnyvale, CA</span></p>
+        </div>
+        <span class="role-tag">Growth · A/B</span>
+      </div>
+      <div class="exp">
+        <span class="exp-date">2018.04 — 2019.09</span>
+        <div>
+          <h3>Business &amp; Data Analyst</h3>
+          <p class="company">LG Ad Solutions<span class="loc">Mountain View, CA</span></p>
+        </div>
+        <span class="role-tag">Targeting · TV</span>
+      </div>
+      <div class="exp">
+        <span class="exp-date">2016.08 — 2017.12</span>
+        <div>
+          <h3>M.S. Statistics</h3>
+          <p class="company">Rice University<span class="loc">Houston, TX · GPA 4.00</span></p>
+        </div>
+        <span class="role-tag">Education</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2 class="section-title"><span class="idx">03</span>Selected Works</h2>
+      <span class="section-kicker">// 06 builds · spatial × analytics</span>
+    </div>
+
+    <div class="bento">
+
+      <!-- 01 Hyakumeiten -->
+      <a href="https://xubing0602.github.io/hyakumeiten_v2/" target="_blank" rel="noopener" class="card c1">
+        <span class="arrow">↗</span>
+        <div class="art" aria-hidden="true">
+          <!-- Rice bowl: concentric arcs + dot grid for grains -->
+          <svg viewBox="0 0 240 150" fill="none" stroke-width="1.2">
+            <g stroke="rgba(230,237,245,0.15)">
+              <line x1="0" y1="110" x2="240" y2="110"/>
+              <line x1="0" y1="118" x2="240" y2="118"/>
+              <line x1="0" y1="126" x2="240" y2="126"/>
+            </g>
+            <!-- steam dots -->
+            <g fill="oklch(0.86 0.14 200)" opacity="0.5">
+              <circle cx="100" cy="30" r="1.3"/>
+              <circle cx="115" cy="22" r="1.8"/>
+              <circle cx="130" cy="34" r="1.3"/>
+              <circle cx="145" cy="24" r="1.5"/>
+            </g>
+            <!-- rice grains -->
+            <g fill="rgba(230,237,245,0.75)">
+              <ellipse cx="85" cy="78" rx="3" ry="1.6"/>
+              <ellipse cx="96" cy="74" rx="3" ry="1.6" transform="rotate(12 96 74)"/>
+              <ellipse cx="108" cy="72" rx="3" ry="1.6" transform="rotate(-8 108 72)"/>
+              <ellipse cx="120" cy="70" rx="3" ry="1.6"/>
+              <ellipse cx="132" cy="72" rx="3" ry="1.6" transform="rotate(10 132 72)"/>
+              <ellipse cx="144" cy="74" rx="3" ry="1.6" transform="rotate(-6 144 74)"/>
+              <ellipse cx="156" cy="78" rx="3" ry="1.6"/>
+              <ellipse cx="92" cy="84" rx="3" ry="1.6" transform="rotate(6 92 84)"/>
+              <ellipse cx="104" cy="82" rx="3" ry="1.6"/>
+              <ellipse cx="116" cy="80" rx="3" ry="1.6"/>
+              <ellipse cx="128" cy="80" rx="3" ry="1.6"/>
+              <ellipse cx="140" cy="82" rx="3" ry="1.6"/>
+              <ellipse cx="150" cy="84" rx="3" ry="1.6"/>
+            </g>
+            <!-- bowl -->
+            <path d="M60 85 Q120 140 180 85" stroke="oklch(0.86 0.14 200)" stroke-width="1.5"/>
+            <line x1="55" y1="85" x2="185" y2="85" stroke="oklch(0.86 0.14 200)" stroke-width="1.5"/>
+            <path d="M72 95 Q120 128 168 95" stroke="rgba(230,237,245,0.25)"/>
+          </svg>
+        </div>
+        <div>
+          <h3>Hyakumeiten Map</h3>
+          <p class="p">Interactive spatial analysis of Japan's top 100 rated restaurants. Web crawling × geospatial mapping for data-backed culinary discovery.</p>
+          <div class="tags">
+            <span class="tag">Python</span><span class="tag">BeautifulSoup</span><span class="tag">Folium</span><span class="tag">Geocoding</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 02 Flight network -->
+      <a href="https://xubing0602.github.io/flight_visualization/" target="_blank" rel="noopener" class="card c2">
+        <span class="arrow">↗</span>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 240 150" fill="none" stroke-width="1.1">
+            <!-- latitude rule -->
+            <line x1="0" y1="110" x2="240" y2="110" stroke="rgba(230,237,245,0.1)"/>
+            <!-- parabolic arcs -->
+            <g stroke="oklch(0.86 0.14 200)" opacity="0.9">
+              <path d="M30 110 Q80 30 150 110"/>
+              <path d="M60 110 Q120 40 200 110" opacity="0.65"/>
+              <path d="M20 110 Q110 55 210 110" opacity="0.45"/>
+            </g>
+            <g stroke="oklch(0.74 0.17 300)" opacity="0.7">
+              <path d="M90 110 Q140 60 220 110"/>
+            </g>
+            <!-- hub nodes -->
+            <g fill="oklch(0.86 0.14 200)">
+              <circle cx="30" cy="110" r="2.5"/>
+              <circle cx="60" cy="110" r="2.5"/>
+              <circle cx="90" cy="110" r="2.5"/>
+              <circle cx="150" cy="110" r="2.5"/>
+              <circle cx="200" cy="110" r="2.5"/>
+              <circle cx="220" cy="110" r="2.5"/>
+              <circle cx="20" cy="110" r="2.5"/>
+              <circle cx="210" cy="110" r="2.5"/>
+            </g>
+            <g fill="rgba(230,237,245,0.4)">
+              <circle cx="80" cy="30" r="1.8"/>
+              <circle cx="120" cy="40" r="1.8"/>
+              <circle cx="110" cy="55" r="1.5"/>
+              <circle cx="140" cy="60" r="1.8"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <h3>Global Flight Network</h3>
+          <p class="p">Visualizing international flight paths and hub connectivity to reveal the pulse of global travel.</p>
+          <div class="tags"><span class="tag">D3.js</span><span class="tag">Aviation Stack</span><span class="tag">GeoJSON</span></div>
+        </div>
+      </a>
+
+      <!-- 03 Sakura -->
+      <a href="https://xubing0602.github.io/sakura_map/" target="_blank" rel="noopener" class="card c3">
+        <span class="arrow">↗</span>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 240 150" fill="none" stroke-width="1.2">
+            <g transform="translate(120 80)">
+              <!-- 5 petals of cherry blossom -->
+              <g stroke="oklch(0.74 0.17 300)" fill="rgba(180,120,220,0.08)">
+                <g>
+                  <path d="M0 -10 C10 -30, 10 -55, 0 -60 C-10 -55, -10 -30, 0 -10 Z"/>
+                </g>
+                <g transform="rotate(72)">
+                  <path d="M0 -10 C10 -30, 10 -55, 0 -60 C-10 -55, -10 -30, 0 -10 Z"/>
+                </g>
+                <g transform="rotate(144)">
+                  <path d="M0 -10 C10 -30, 10 -55, 0 -60 C-10 -55, -10 -30, 0 -10 Z"/>
+                </g>
+                <g transform="rotate(216)">
+                  <path d="M0 -10 C10 -30, 10 -55, 0 -60 C-10 -55, -10 -30, 0 -10 Z"/>
+                </g>
+                <g transform="rotate(288)">
+                  <path d="M0 -10 C10 -30, 10 -55, 0 -60 C-10 -55, -10 -30, 0 -10 Z"/>
+                </g>
+              </g>
+              <circle r="3" fill="oklch(0.86 0.14 200)"/>
+            </g>
+            <!-- floating petals -->
+            <g fill="oklch(0.74 0.17 300)" opacity="0.4">
+              <circle cx="30" cy="30" r="1.5"/>
+              <circle cx="50" cy="20" r="1"/>
+              <circle cx="200" cy="40" r="1.2"/>
+              <circle cx="220" cy="25" r="1"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <h3>Sakura Frontier</h3>
+          <p class="p">Predictive modeling for the Japanese Cherry Blossom season — meteorology meets data viz.</p>
+          <div class="tags"><span class="tag">Time-series</span><span class="tag">Python</span></div>
+        </div>
+      </a>
+
+      <!-- 04 China Explorer -->
+      <a href="https://xubing0602.github.io/cn_explorer/" target="_blank" rel="noopener" class="card c4">
+        <span class="arrow">↗</span>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 240 150" fill="none" stroke-width="1.2">
+            <!-- node network -->
+            <g stroke="rgba(230,237,245,0.18)">
+              <line x1="50" y1="50" x2="110" y2="40"/>
+              <line x1="110" y1="40" x2="170" y2="55"/>
+              <line x1="170" y1="55" x2="200" y2="90"/>
+              <line x1="50" y1="50" x2="90" y2="90"/>
+              <line x1="90" y1="90" x2="140" y2="100"/>
+              <line x1="140" y1="100" x2="200" y2="90"/>
+              <line x1="110" y1="40" x2="140" y2="100"/>
+              <line x1="60" y1="110" x2="90" y2="90"/>
+              <line x1="60" y1="110" x2="140" y2="100"/>
+              <line x1="170" y1="55" x2="140" y2="100"/>
+            </g>
+            <g stroke="oklch(0.86 0.14 200)">
+              <line x1="110" y1="40" x2="140" y2="100"/>
+              <line x1="50" y1="50" x2="110" y2="40"/>
+              <line x1="140" y1="100" x2="200" y2="90"/>
+            </g>
+            <g fill="oklch(0.86 0.14 200)">
+              <circle cx="50" cy="50" r="3"/>
+              <circle cx="110" cy="40" r="3.5"/>
+              <circle cx="170" cy="55" r="3"/>
+              <circle cx="200" cy="90" r="3"/>
+              <circle cx="90" cy="90" r="2.5"/>
+              <circle cx="140" cy="100" r="4"/>
+              <circle cx="60" cy="110" r="2.5"/>
+            </g>
+            <!-- label ring on largest -->
+            <circle cx="140" cy="100" r="9" stroke="oklch(0.86 0.14 200)" opacity="0.4"/>
+          </svg>
+        </div>
+        <div>
+          <h3>China Explorer</h3>
+          <p class="p">A data-driven journey mapping travel footprints across China's provinces.</p>
+          <div class="tags"><span class="tag">JavaScript</span><span class="tag">GeoJSON</span></div>
+        </div>
+      </a>
+
+      <!-- 05 Japan Explorer -->
+      <a href="https://xubing0602.github.io/jp_explorer/" target="_blank" rel="noopener" class="card c5">
+        <span class="arrow">↗</span>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 240 150" fill="none" stroke-width="1.2">
+            <!-- Torii gate abstraction: two posts + two lintels -->
+            <g stroke="oklch(0.86 0.14 200)">
+              <line x1="60" y1="50" x2="180" y2="50" stroke-width="2.2"/>
+              <line x1="55" y1="58" x2="185" y2="58" stroke-width="1.4"/>
+              <line x1="75" y1="58" x2="75" y2="120" stroke-width="1.8"/>
+              <line x1="165" y1="58" x2="165" y2="120" stroke-width="1.8"/>
+              <line x1="85" y1="72" x2="155" y2="72" stroke-width="1"/>
+            </g>
+            <!-- dot matrix archipelago -->
+            <g fill="rgba(230,237,245,0.35)">
+              <circle cx="50" cy="125" r="1.2"/><circle cx="58" cy="125" r="1.2"/>
+              <circle cx="66" cy="130" r="1.2"/><circle cx="74" cy="128" r="1.2"/>
+              <circle cx="110" cy="130" r="1.2"/><circle cx="118" cy="128" r="1.2"/>
+              <circle cx="160" cy="130" r="1.2"/><circle cx="170" cy="128" r="1.2"/>
+              <circle cx="180" cy="132" r="1.2"/><circle cx="188" cy="130" r="1.2"/>
+            </g>
+            <circle cx="120" cy="32" r="8" stroke="oklch(0.74 0.17 300)" opacity="0.7"/>
+          </svg>
+        </div>
+        <div>
+          <h3>Japan Explorer</h3>
+          <p class="p">High-resolution spatial rendering of exploration across Japan's prefectures.</p>
+          <div class="tags"><span class="tag">Leaflet</span><span class="tag">GeoJSON</span></div>
+        </div>
+      </a>
+
+      <!-- 06 WHC -->
+      <a href="https://xubing0602.github.io/whc_explorer/" target="_blank" rel="noopener" class="card c6">
+        <span class="arrow">↗</span>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 240 150" fill="none" stroke-width="1.1">
+            <!-- globe grid -->
+            <g stroke="oklch(0.86 0.14 200)" opacity="0.9">
+              <circle cx="120" cy="75" r="52"/>
+              <ellipse cx="120" cy="75" rx="52" ry="18"/>
+              <ellipse cx="120" cy="75" rx="26" ry="52"/>
+              <ellipse cx="120" cy="75" rx="52" ry="40"/>
+              <line x1="68" y1="75" x2="172" y2="75"/>
+            </g>
+            <!-- site dots -->
+            <g fill="oklch(0.74 0.17 300)">
+              <circle cx="100" cy="50" r="2"/>
+              <circle cx="140" cy="60" r="2.5"/>
+              <circle cx="150" cy="90" r="2"/>
+              <circle cx="90" cy="95" r="2.2"/>
+              <circle cx="120" cy="40" r="1.8"/>
+              <circle cx="130" cy="110" r="2"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <h3>World Heritage Center</h3>
+          <p class="p">A global atlas transforming UNESCO datasets into an interactive exploration of cultural and natural heritage.</p>
+          <div class="tags"><span class="tag">Web Mapping</span><span class="tag">Data Engineering</span><span class="tag">UI/UX</span></div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2 class="section-title"><span class="idx">04</span>Tech Stack</h2>
+      <span class="section-kicker">// tools of the trade</span>
+    </div>
+
+    <div class="skill-row reveal">
+      <div class="skill-cat">Data &amp; Compute</div>
+      <div class="chips">
+        <span class="chip">PySpark</span><span class="chip">Hive</span><span class="chip">Scala</span><span class="chip">Presto</span><span class="chip">Python</span><span class="chip">Bash</span><span class="chip">SQL</span>
+      </div>
+    </div>
+    <div class="skill-row reveal">
+      <div class="skill-cat">Modeling</div>
+      <div class="chips">
+        <span class="chip">XGBoost</span><span class="chip">LightGBM</span><span class="chip">Logistic Regression</span><span class="chip">Matrix Factorization (ALS)</span><span class="chip">K-Means</span><span class="chip">Time-Series</span><span class="chip">SHAP</span>
+      </div>
+    </div>
+    <div class="skill-row reveal">
+      <div class="skill-cat">Visualization</div>
+      <div class="chips">
+        <span class="chip">Looker</span><span class="chip">Redash</span><span class="chip">Plotly</span><span class="chip">D3.js</span><span class="chip">Folium</span><span class="chip">Leaflet</span>
+      </div>
+    </div>
+    <div class="skill-row reveal">
+      <div class="skill-cat">Domains</div>
+      <div class="chips">
+        <span class="chip">Ads Monetization</span><span class="chip">CTR Prediction</span><span class="chip">Subscription Growth</span><span class="chip">A/B Testing</span><span class="chip">Content ROI</span><span class="chip">Audience Targeting</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<footer id="contact">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot reveal">
+        <h2>Let's <span class="accent">decode</span><br>something together.</h2>
+        <p class="sub-line">Open to Senior / Staff DS roles in Ads, Subscription, and Content Strategy. Happy to chat about marginal lifts and messy data.</p>
+      </div>
+      <div class="foot-col reveal">
+        <h4>Connect</h4>
+        <a href="mailto:xubing0602@gmail.com">xubing0602@gmail.com ↗</a>
+        <a href="https://github.com/xubing0602" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="https://www.linkedin.com/in/xubing0602" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+      <div class="foot-col reveal">
+        <h4>Location</h4>
+        <span>Beijing, CN</span>
+        <span>UTC +08:00</span>
+        <span>Open to remote</span>
+      </div>
+    </div>
+
+    <div class="foot-term reveal">
+      <span><span class="p">$</span> contact --email xubing0602@gmail.com --status open</span>
+      <span>// response time: &lt; 24h</span>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© 2026 Bing Xu · Hand-coded with precision</span>
+      <span>v2.0 · built for the curious</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // --- Tweak defaults (persisted) ---
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "accent": "cyan",
+    "display": "space",
+    "density": "compact",
+    "grid": "on"
+  }/*EDITMODE-END*/;
+
+  function applyTweaks(t){
+    document.body.dataset.accent  = t.accent;
+    document.body.dataset.display = t.display;
+    document.body.dataset.density = t.density;
+    document.body.dataset.grid    = t.grid;
+    // reflect in UI
+    document.querySelectorAll('#tw-accent .sw').forEach(el => el.classList.toggle('active', el.dataset.v === t.accent));
+    document.querySelectorAll('#tw-display button').forEach(el => el.classList.toggle('active', el.dataset.v === t.display));
+    document.querySelectorAll('#tw-density button').forEach(el => el.classList.toggle('active', el.dataset.v === t.density));
+    document.getElementById('tw-grid').classList.toggle('on', t.grid === 'on');
+  }
+  const _tw = { ...TWEAK_DEFAULTS };
+  applyTweaks(_tw);
+
+  function setTweak(k, v){
+    _tw[k] = v;
+    applyTweaks(_tw);
+    try { window.parent.postMessage({type:'__edit_mode_set_keys', edits:{[k]:v}}, '*'); } catch(e){}
+  }
+
+  document.querySelectorAll('#tw-accent .sw').forEach(el => el.addEventListener('click', ()=>setTweak('accent', el.dataset.v)));
+  document.querySelectorAll('#tw-display button').forEach(el => el.addEventListener('click', ()=>setTweak('display', el.dataset.v)));
+  document.querySelectorAll('#tw-density button').forEach(el => el.addEventListener('click', ()=>setTweak('density', el.dataset.v)));
+  document.getElementById('tw-grid').addEventListener('click', ()=>setTweak('grid', _tw.grid === 'on' ? 'off' : 'on'));
+  document.getElementById('tw-close').addEventListener('click', ()=>{
+    document.getElementById('tweaks').classList.remove('on');
+    try { window.parent.postMessage({type:'__edit_mode_closed'}, '*'); } catch(e){}
+  });
+
+  // Edit mode protocol
+  window.addEventListener('message', (e)=>{
+    const d = e.data || {};
+    if(d.type === '__activate_edit_mode')   document.getElementById('tweaks').classList.add('on');
+    if(d.type === '__deactivate_edit_mode') document.getElementById('tweaks').classList.remove('on');
+  });
+  try { window.parent.postMessage({type:'__edit_mode_available'}, '*'); } catch(e){}
+
+  // terminal typing
+  (function(){
+    const phrases = [
+      "[ACTION]: decoding complex data into growth engines.",
+      "[FOCUS]: ads monetization × subscription strategy.",
+      "[MODE]: storytelling across server logs and world maps."
+    ];
+    const el = document.getElementById('type');
+    let pi = 0, ci = 0, deleting = false;
+    function tick(){
+      const p = phrases[pi];
+      if(!deleting){
+        el.textContent = p.slice(0, ++ci);
+        if(ci === p.length){ deleting = true; setTimeout(tick, 2400); return; }
+      } else {
+        el.textContent = p.slice(0, --ci);
+        if(ci === 0){ deleting = false; pi = (pi+1) % phrases.length; }
+      }
+      setTimeout(tick, deleting ? 20 : 38);
+    }
+    tick();
+  })();
+
+  // reveal on scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target);} });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // project card mouse glow
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+</script>
+
+</body>
+</html>

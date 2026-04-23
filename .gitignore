@@ -1,0 +1,6 @@
+# Ignore all files in assets/
+assets/*
+
+# Keep these specific files
+!assets/avatar.webp
+!assets/avatar_resized.jpg

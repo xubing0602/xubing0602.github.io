@@ -62,3 +62,34 @@ The tweaks panel (bottom-right) toggles accent, font, density, and grid at runti
 - Google Fonts loaded with `display=swap` to prevent invisible text during load
 - Hero image preloaded via `<link rel="preload">` to minimize LCP
 - Animated layers use `will-change` for GPU compositing
+
+## Changelog
+
+### 2026-04-29 — Project Card SVG Redesigns
+
+**Sakura Map**
+- Replaced narrow teardrop petals with proper wide cherry-blossom petals featuring characteristic notched tips
+- Added double petal layer (back layer rotated 36°) for depth and fullness
+- Added 10 gold stamens with anther dots; switched palette from purple to pink (oklch ~355°)
+- Added 5 scattered fallen petal silhouettes as atmosphere
+
+**Japan Restaurant Map**
+- Replaced generic map-pin cluster with a ramen bowl illustration
+- Bowl has double-ellipse rim (depth detail), wavy noodle lines, steam wisps, and two chopsticks resting diagonally across the rim
+- Three small map pins retained in corners to preserve the map/location context
+
+**China Footprints w/ Friends**
+- Replaced abstract node-graph with scattered city dots and dashed route lines
+- Added 3 hand-drawn penguin figures (1 cyan = self, 2 purple = friends) standing at key cities
+- Shared city marked with a glowing halo ring where a friend penguin stands
+
+**My Flight Atlas**
+- Added two airplane silhouettes (top-down view with swept wings and tail fins)
+- Cyan plane at apex of main arc (t=0.5, horizontal cruise); purple plane descending on purple arc (t=0.65, rotated 12°)
+- Planes positioned using precise quadratic Bézier midpoint calculations
+
+**World Heritage Explorer**
+- Replaced globe wireframe with a split cultural/natural heritage scene
+- Left (cyan): Greek temple with pediment, 6 columns, entablature, and two-step stylobate
+- Right (purple): three-peak mountain range with snow cap and two pine tree clusters
+- Centre: subtle UNESCO-style emblem (square = cultural, circle = natural, partially overlapping)

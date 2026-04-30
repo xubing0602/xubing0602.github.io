@@ -90,7 +90,70 @@
   .nav-links a{transition:color .2s}
   .nav-links a:hover{color:var(--cyan)}
   .nav-links .slash{color:var(--ink-faint)}
+  .mobile-nav{
+    display:none;
+    position:relative;
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:lowercase;
+  }
+  .mobile-nav-trigger{
+    border:1px solid var(--panel-border);
+    border-radius:8px;
+    padding:8px 14px;
+    min-width:172px;
+    background:rgba(255,255,255,0.02);
+    color:var(--ink-dim);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    cursor:pointer;
+    transition:border-color .2s, color .2s, background .2s;
+  }
+  .mobile-nav-trigger .trigger-label{display:flex;align-items:center;gap:6px}
+  .mobile-nav-trigger .slash{color:var(--cyan);opacity:.8}
+  .mobile-nav-trigger .arr{color:var(--ink-faint);font-size:10px;transition:transform .25s,color .2s;margin-left:2px}
+  .mobile-nav.open .mobile-nav-trigger{border-color:rgba(0,220,240,0.35);background:rgba(255,255,255,0.03);color:var(--ink)}
+  .mobile-nav.open .mobile-nav-trigger .arr{color:var(--cyan);transform:rotate(180deg)}
+  .mobile-nav-menu{
+    position:absolute;
+    right:0;
+    top:calc(100% + 6px);
+    min-width:196px;
+    border:1px solid var(--panel-border);
+    border-radius:10px;
+    background:rgba(11,14,20,0.97);
+    backdrop-filter:blur(16px) saturate(1.3);
+    -webkit-backdrop-filter:blur(16px) saturate(1.3);
+    box-shadow:0 24px 48px -20px rgba(0,0,0,.95), 0 0 0 0.5px rgba(255,255,255,0.04) inset;
+    padding:6px;
+    display:none;
+    transform-origin:top right;
+  }
+  .mobile-nav.open .mobile-nav-menu{display:block}
+  .mobile-nav-menu a{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 12px;
+    border-radius:7px;
+    color:var(--ink-dim);
+    transition:color .2s, background .2s;
+  }
+  .mobile-nav-menu a .mn-idx{
+    font-size:10px;letter-spacing:.12em;color:var(--ink-faint);
+    width:16px;flex-shrink:0;transition:color .2s;
+  }
+  .mobile-nav-menu a .mn-slash{color:var(--ink-faint);transition:color .2s}
+  .mobile-nav-menu a .mn-label{transition:color .2s}
+  .mobile-nav-menu a:hover,.mobile-nav-menu a.active{color:var(--cyan);background:rgba(0,220,240,0.04)}
+  .mobile-nav-menu a:hover .mn-idx,.mobile-nav-menu a.active .mn-idx{color:var(--cyan);opacity:.6}
+  .mobile-nav-menu a:hover .mn-slash,.mobile-nav-menu a.active .mn-slash{color:var(--cyan)}
+  .mobile-nav-menu a.active{color:var(--cyan)}
   @media (max-width:720px){.nav-links{display:none}}
+  @media (max-width:720px){.mobile-nav{display:block}}
 
   /* tiny label */
   .eyebrow{
@@ -365,6 +428,9 @@
   body[data-density="compact"] section{padding:72px 0}
   body[data-density="compact"] #hero{padding:120px 0 70px}
   body[data-density="roomy"] section{padding:140px 0}
+  #skills{padding-bottom:48px}
+  body[data-density="compact"] #skills{padding-bottom:32px}
+  body[data-density="roomy"] #skills{padding-bottom:64px}
 
   @media (prefers-reduced-motion: reduce) {
     .grid-layer, .scan, .logo .dot { animation: none; }
@@ -427,6 +493,18 @@
       <a href="#projects"><span class="slash">/</span>projects</a>
       <a href="#skills"><span class="slash">/</span>skills</a>
       <a href="#contact"><span class="slash">/</span>contact</a>
+    </div>
+    <div class="mobile-nav" id="mobile-nav">
+      <button class="mobile-nav-trigger" id="mobile-nav-trigger" type="button" aria-expanded="false" aria-controls="mobile-nav-menu">
+        <span class="trigger-label"><span class="slash">/</span><span id="mobile-nav-label">jump to</span></span><span class="arr">▾</span>
+      </button>
+      <div class="mobile-nav-menu" id="mobile-nav-menu" role="menu" aria-label="Jump to section">
+        <a href="#about" role="menuitem" data-section="about"><span class="mn-idx">01</span><span class="mn-slash">/</span><span class="mn-label">about</span></a>
+        <a href="#experience" role="menuitem" data-section="experience"><span class="mn-idx">02</span><span class="mn-slash">/</span><span class="mn-label">experience</span></a>
+        <a href="#projects" role="menuitem" data-section="projects"><span class="mn-idx">03</span><span class="mn-slash">/</span><span class="mn-label">projects</span></a>
+        <a href="#skills" role="menuitem" data-section="skills"><span class="mn-idx">04</span><span class="mn-slash">/</span><span class="mn-label">skills</span></a>
+        <a href="#contact" role="menuitem" data-section="contact"><span class="mn-idx">05</span><span class="mn-slash">/</span><span class="mn-label">contact</span></a>
+      </div>
     </div>
   </div>
 </nav>
@@ -566,42 +644,37 @@
       <a href="https://xubing0602.github.io/hyakumeiten_v2/" target="_blank" rel="noopener" class="card c1">
         <span class="arrow">↗</span>
         <div class="art" aria-hidden="true">
-          <!-- ramen bowl + map pins -->
           <svg viewBox="0 0 240 150" fill="none">
-            <!-- Subtle background grid -->
-            <g stroke="rgba(230,237,245,0.05)">
-              <line x1="0" y1="37" x2="240" y2="37"/><line x1="0" y1="75" x2="240" y2="75"/><line x1="0" y1="113" x2="240" y2="113"/>
-              <line x1="60" y1="0" x2="60" y2="150"/><line x1="120" y1="0" x2="120" y2="150"/><line x1="180" y1="0" x2="180" y2="150"/>
+            <defs>
+              <radialGradient id="ramenGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(120 88) rotate(90) scale(74 110)">
+                <stop stop-color="oklch(0.86 0.14 200)" stop-opacity="0.16"/>
+                <stop offset="1" stop-color="oklch(0.86 0.14 200)" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect x="18" y="22" width="204" height="106" rx="12" fill="url(#ramenGlow)"/>
+            <g stroke="rgba(230,237,245,0.06)">
+              <path d="M30 34H210"/><path d="M30 58H210"/><path d="M30 82H210"/><path d="M30 106H210"/>
+              <path d="M60 24V126"/><path d="M120 24V126"/><path d="M180 24V126"/>
             </g>
-            <!-- Small background map pins (map context) -->
-            <path d="M28,18 C23,18 18,23 18,29 C18,38 28,51 28,51 C28,51 38,38 38,29 C38,23 33,18 28,18Z" fill="oklch(0.86 0.14 200)" opacity="0.42"/>
-            <circle cx="28" cy="28" r="3.5" fill="#0B0E14"/>
-            <path d="M212,12 C207,12 202,17 202,23 C202,32 212,45 212,45 C212,45 222,32 222,23 C222,17 217,12 212,12Z" fill="oklch(0.74 0.17 300)" opacity="0.48"/>
-            <circle cx="212" cy="22" r="3.5" fill="#0B0E14"/>
-            <path d="M224,90 C220,90 216,94 216,99 C216,107 224,117 224,117 C224,117 232,107 232,99 C232,94 228,90 224,90Z" fill="oklch(0.86 0.14 200)" opacity="0.3"/>
-            <circle cx="224" cy="98" r="3" fill="#0B0E14"/>
-            <!-- Steam wisps -->
-            <g stroke="oklch(0.86 0.14 200)" stroke-width="1.1" stroke-linecap="round" opacity="0.35" fill="none">
-              <path d="M105,58 Q102,50 105,42 Q108,34 105,26"/>
-              <path d="M120,55 Q117,47 120,39 Q123,31 120,22"/>
-              <path d="M135,58 Q132,50 135,42 Q138,34 135,26"/>
+            <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M78 68C78 98 95 118 120 120C145 118 162 98 162 68" stroke="oklch(0.86 0.14 200)" stroke-width="2"/>
+              <ellipse cx="120" cy="67" rx="44" ry="10" stroke="oklch(0.86 0.14 200)" stroke-width="1.8" fill="rgba(32,155,175,0.12)"/>
+              <path d="M90 80C98 75 108 74 118 79C128 84 138 84 149 78" stroke="oklch(0.86 0.14 200)" stroke-width="1.6" opacity="0.75"/>
+              <path d="M88 92C97 87 109 86 120 91C131 96 143 95 154 89" stroke="oklch(0.86 0.14 200)" stroke-width="1.6" opacity="0.65"/>
+              <path d="M90 104C100 100 112 99 123 103C134 107 146 106 156 101" stroke="oklch(0.86 0.14 200)" stroke-width="1.6" opacity="0.55"/>
+              <path d="M72 89L175 48" stroke="oklch(0.86 0.14 200)" stroke-width="2.2"/>
+              <path d="M79 98L182 57" stroke="oklch(0.86 0.14 200)" stroke-width="2.2" opacity="0.88"/>
+              <path d="M104 56C102 49 103 42 106 36" stroke="oklch(0.86 0.14 200)" stroke-width="1.2" opacity="0.45"/>
+              <path d="M120 53C118 46 119 39 122 32" stroke="oklch(0.86 0.14 200)" stroke-width="1.2" opacity="0.45"/>
+              <path d="M136 56C134 49 135 42 138 36" stroke="oklch(0.86 0.14 200)" stroke-width="1.2" opacity="0.45"/>
             </g>
-            <!-- Bowl body -->
-            <path d="M74,65 C69,65 64,71 64,78 C64,112 80,135 120,137 C160,135 176,112 176,78 C176,71 171,65 166,65" stroke="oklch(0.86 0.14 200)" fill="rgba(32,155,175,0.08)" stroke-width="1.5"/>
-            <!-- Bowl rim outer -->
-            <ellipse cx="120" cy="65" rx="46" ry="9.5" stroke="oklch(0.86 0.14 200)" fill="rgba(32,155,175,0.13)" stroke-width="1.5"/>
-            <!-- Bowl rim inner (depth detail) -->
-            <ellipse cx="120" cy="65" rx="38" ry="7" stroke="oklch(0.86 0.14 200)" fill="none" stroke-width="0.7" opacity="0.45"/>
-            <!-- Noodles (3 wavy lines) -->
-            <g stroke="oklch(0.86 0.14 200)" stroke-width="1.2" stroke-linecap="round" opacity="0.62" fill="none">
-              <path d="M88,80 Q99,74 111,80 Q123,86 135,80 Q147,74 152,77"/>
-              <path d="M85,93 Q97,87 110,93 Q123,99 136,93 Q148,87 154,90"/>
-              <path d="M88,106 Q101,100 115,106 Q129,112 143,106 Q153,102 157,104"/>
-            </g>
-            <!-- Chopsticks resting diagonally across bowl -->
-            <g stroke="oklch(0.86 0.14 200)" stroke-width="1.9" stroke-linecap="round" opacity="0.82">
-              <line x1="58" y1="88" x2="180" y2="40"/>
-              <line x1="65" y1="97" x2="187" y2="49"/>
+            <g>
+              <path d="M34 26C29 26 24 31 24 37C24 45 34 56 34 56C34 56 44 45 44 37C44 31 39 26 34 26Z" fill="oklch(0.86 0.14 200)" opacity="0.48"/>
+              <circle cx="34" cy="36.5" r="3" fill="#0B0E14"/>
+              <path d="M206 20C201 20 196 25 196 31C196 39 206 50 206 50C206 50 216 39 216 31C216 25 211 20 206 20Z" fill="oklch(0.74 0.17 300)" opacity="0.52"/>
+              <circle cx="206" cy="30.5" r="3" fill="#0B0E14"/>
+              <path d="M214 86C210 86 206 90 206 95C206 103 214 113 214 113C214 113 222 103 222 95C222 90 218 86 214 86Z" fill="oklch(0.86 0.14 200)" opacity="0.34"/>
+              <circle cx="214" cy="94.5" r="2.6" fill="#0B0E14"/>
             </g>
           </svg>
         </div>
@@ -619,42 +692,36 @@
       <a href="https://xubing0602.github.io/flight_visualization/" target="_blank" rel="noopener" class="card c2">
         <span class="arrow">↗</span>
         <div class="art" aria-hidden="true">
-          <svg viewBox="0 0 240 150" fill="none" stroke-width="1.1">
-            <!-- baseline -->
-            <line x1="0" y1="110" x2="240" y2="110" stroke="rgba(230,237,245,0.1)"/>
-            <!-- flight arcs -->
-            <g stroke="oklch(0.86 0.14 200)" opacity="0.9">
-              <path d="M30 110 Q80 30 150 110"/>
-              <path d="M60 110 Q120 40 200 110" opacity="0.65"/>
-              <path d="M20 110 Q110 55 210 110" opacity="0.45"/>
+          <svg viewBox="0 0 240 150" fill="none">
+            <defs>
+              <linearGradient id="arcA" x1="30" y1="110" x2="165" y2="56" gradientUnits="userSpaceOnUse">
+                <stop stop-color="oklch(0.86 0.14 200)" stop-opacity="0.35"/>
+                <stop offset="1" stop-color="oklch(0.86 0.14 200)" stop-opacity="0.95"/>
+              </linearGradient>
+              <linearGradient id="arcB" x1="72" y1="110" x2="214" y2="58" gradientUnits="userSpaceOnUse">
+                <stop stop-color="oklch(0.86 0.14 200)" stop-opacity="0.2"/>
+                <stop offset="1" stop-color="oklch(0.74 0.17 300)" stop-opacity="0.9"/>
+              </linearGradient>
+            </defs>
+            <path d="M22 110H220" stroke="rgba(230,237,245,0.13)" stroke-width="1.2" stroke-linecap="round"/>
+            <g stroke-linecap="round" stroke-linejoin="round">
+              <path d="M34 110C63 48 110 42 154 110" stroke="url(#arcA)" stroke-width="2.2"/>
+              <path d="M72 110C103 54 156 50 208 110" stroke="url(#arcB)" stroke-width="2.2"/>
+              <path d="M48 110C92 73 139 72 184 110" stroke="oklch(0.86 0.14 200)" stroke-opacity="0.35" stroke-width="1.6"/>
             </g>
-            <g stroke="oklch(0.74 0.17 300)" opacity="0.7">
-              <path d="M90 110 Q140 60 220 110"/>
-            </g>
-            <!-- airport nodes -->
             <g fill="oklch(0.86 0.14 200)">
-              <circle cx="20"  cy="110" r="2.5"/>
-              <circle cx="30"  cy="110" r="2.5"/>
-              <circle cx="60"  cy="110" r="2.5"/>
-              <circle cx="90"  cy="110" r="2.5"/>
-              <circle cx="150" cy="110" r="2.5"/>
-              <circle cx="200" cy="110" r="2.5"/>
-              <circle cx="210" cy="110" r="2.5"/>
-              <circle cx="220" cy="110" r="2.5"/>
+              <circle cx="34" cy="110" r="2.8"/><circle cx="72" cy="110" r="2.8"/><circle cx="154" cy="110" r="2.8"/><circle cx="208" cy="110" r="2.8"/>
+              <circle cx="48" cy="110" r="2.4" opacity="0.7"/><circle cx="184" cy="110" r="2.4" opacity="0.7"/>
             </g>
-            <!-- Plane 1 — CYAN — apex of main arc (85,70), horizontal cruise -->
-            <!-- position: t=0.5 on M30,110 Q80,30 150,110 → (85,70), angle=0° -->
-            <g transform="translate(85,70) rotate(0)" fill="oklch(0.86 0.14 200)" opacity="0.95">
-              <path d="M 9,0 L 2,-1.5 L -8,-1 L -9,0 L -8,1 L 2,1.5 Z"/>
-              <path d="M 2,-1.5 L -1,-8 L -5,-7 L -1,-1 Z"/>
-              <path d="M 2,1.5 L -1,8 L -5,7 L -1,1 Z"/>
+            <g transform="translate(104,66) rotate(-8)" fill="oklch(0.86 0.14 200)">
+              <path d="M10 0L2 -2L-9 -1L-10 0L-9 1L2 2Z"/>
+              <path d="M2 -2L-1 -8L-4.5 -7L-1 -1Z"/>
+              <path d="M2 2L-1 8L-4.5 7L-1 1Z"/>
             </g>
-            <!-- Plane 2 — PURPLE — descending on purple arc (168,87), angle=12° -->
-            <!-- position: t=0.65 on M90,110 Q140,60 220,110 → (168,87), angle≈12° -->
-            <g transform="translate(168,87) rotate(12)" fill="oklch(0.74 0.17 300)" opacity="0.9">
-              <path d="M 7,0 L 1.5,-1.2 L -6,-0.8 L -7,0 L -6,0.8 L 1.5,1.2 Z"/>
-              <path d="M 1.5,-1.2 L -0.8,-6 L -3.8,-5.4 L -0.8,-0.8 Z"/>
-              <path d="M 1.5,1.2 L -0.8,6 L -3.8,5.4 L -0.8,0.8 Z"/>
+            <g transform="translate(156,72) rotate(16)" fill="oklch(0.74 0.17 300)">
+              <path d="M8 0L1.8 -1.7L-7 -1L-8 0L-7 1L1.8 1.7Z"/>
+              <path d="M1.8 -1.7L-0.6 -6L-3.6 -5.2L-0.6 -0.7Z"/>
+              <path d="M1.8 1.7L-0.6 6L-3.6 5.2L-0.6 0.7Z"/>
             </g>
           </svg>
         </div>
@@ -736,73 +803,37 @@
       <a href="https://xubing0602.github.io/cn_explorer/" target="_blank" rel="noopener" class="card c4">
         <span class="arrow">↗</span>
         <div class="art" aria-hidden="true">
-          <!-- city dots + penguin friends -->
           <svg viewBox="0 0 240 150" fill="none">
-            <!-- Self (cyan) route lines -->
-            <g stroke="oklch(0.86 0.14 200)" stroke-width="0.85" stroke-linecap="round" stroke-dasharray="3 4" opacity="0.38">
-              <line x1="44" y1="50" x2="118" y2="88"/>
-              <line x1="118" y1="88" x2="152" y2="60"/>
-              <line x1="152" y1="60" x2="192" y2="40"/>
-              <line x1="118" y1="88" x2="112" y2="115"/>
-              <line x1="152" y1="60" x2="147" y2="118"/>
+            <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M42 52C74 58 95 70 118 88C131 98 143 104 151 118" stroke="oklch(0.86 0.14 200)" stroke-width="1.4" stroke-opacity="0.42" stroke-dasharray="3 5"/>
+              <path d="M118 88C130 75 141 67 152 60C166 51 179 46 194 40" stroke="oklch(0.86 0.14 200)" stroke-width="1.4" stroke-opacity="0.42" stroke-dasharray="3 5"/>
+              <path d="M152 60C162 68 169 78 176 90C179 96 183 102 191 107" stroke="oklch(0.74 0.17 300)" stroke-width="1.4" stroke-opacity="0.45" stroke-dasharray="3 5"/>
+              <path d="M152 60C161 75 163 95 147 118" stroke="oklch(0.74 0.17 300)" stroke-width="1.4" stroke-opacity="0.45" stroke-dasharray="3 5"/>
             </g>
-            <!-- Friend (purple) route lines -->
-            <g stroke="oklch(0.74 0.17 300)" stroke-width="0.85" stroke-linecap="round" stroke-dasharray="3 4" opacity="0.38">
-              <line x1="152" y1="60" x2="175" y2="90"/>
-              <line x1="175" y1="90" x2="147" y2="118"/>
-              <line x1="175" y1="90" x2="192" y2="40"/>
+            <g fill="oklch(0.86 0.14 200)">
+              <circle cx="42" cy="52" r="2.8"/><circle cx="118" cy="88" r="3.2"/><circle cx="194" cy="40" r="2.8"/><circle cx="151" cy="118" r="2.8"/>
             </g>
-            <!-- City dots (cyan = self-only) -->
-            <g fill="oklch(0.86 0.14 200)" opacity="0.75">
-              <circle cx="44"  cy="50"  r="2.8"/>
-              <circle cx="192" cy="40"  r="2.8"/>
-              <circle cx="112" cy="115" r="2.8"/>
-              <circle cx="147" cy="118" r="2.8"/>
+            <g fill="oklch(0.74 0.17 300)">
+              <circle cx="176" cy="90" r="2.8"/><circle cx="147" cy="118" r="2.6"/>
             </g>
-            <!-- Shared city dot (overlap glow) -->
-            <circle cx="152" cy="60" r="9" fill="rgba(32,155,175,0.10)" stroke="oklch(0.86 0.14 200)" stroke-width="0.7" opacity="0.5"/>
-            <circle cx="152" cy="60" r="3.5" fill="rgba(230,237,245,0.85)"/>
-
-            <!-- ── Penguin: SELF (cyan) at (118, 88) ── -->
+            <circle cx="152" cy="60" r="10" fill="rgba(120,80,200,0.12)" stroke="oklch(0.74 0.17 300)" stroke-width="1.1"/>
+            <circle cx="152" cy="60" r="3.3" fill="rgba(230,237,245,0.9)"/>
             <g transform="translate(118,88)">
-              <ellipse cx="-6" cy="2" rx="2.2" ry="5" transform="rotate(-12,-6,2)" fill="oklch(0.68 0.20 200)"/>
-              <ellipse cx="6"  cy="2" rx="2.2" ry="5" transform="rotate(12,6,2)"   fill="oklch(0.68 0.20 200)"/>
-              <ellipse cx="0" cy="4"  rx="5.5" ry="7.5" fill="oklch(0.68 0.20 200)"/>
-              <ellipse cx="0" cy="5"  rx="3.2" ry="5"   fill="rgba(230,237,245,0.45)"/>
-              <circle  cx="0" cy="-5" r="5"              fill="oklch(0.68 0.20 200)"/>
-              <circle  cx="-2" cy="-5.5" r="1.1" fill="rgba(230,237,245,0.92)"/>
-              <circle  cx=" 2" cy="-5.5" r="1.1" fill="rgba(230,237,245,0.92)"/>
-              <path    d="M-1.2,-3.5 L0,-1.8 L1.2,-3.5 Z" fill="oklch(0.88 0.14 68)"/>
-              <circle  cx="-2.5" cy="12" r="1.3" fill="oklch(0.88 0.14 68)"/>
-              <circle  cx=" 2.5" cy="12" r="1.3" fill="oklch(0.88 0.14 68)"/>
+              <ellipse cx="0" cy="5" rx="7" ry="8.8" fill="oklch(0.68 0.20 200)"/>
+              <ellipse cx="0" cy="6" rx="3.8" ry="5.4" fill="rgba(230,237,245,0.5)"/>
+              <circle cx="0" cy="-3.5" r="5.2" fill="oklch(0.68 0.20 200)"/>
+              <ellipse cx="-6" cy="3" rx="2.3" ry="4.8" transform="rotate(-14 -6 3)" fill="oklch(0.68 0.20 200)"/>
+              <ellipse cx="6" cy="3" rx="2.3" ry="4.8" transform="rotate(14 6 3)" fill="oklch(0.68 0.20 200)"/>
             </g>
-
-            <!-- ── Penguin: FRIEND A (purple) at (175, 90) ── -->
-            <g transform="translate(175,90)">
-              <ellipse cx="-5.5" cy="2" rx="2"   ry="4.5" transform="rotate(-12,-5.5,2)" fill="oklch(0.58 0.22 300)"/>
-              <ellipse cx=" 5.5" cy="2" rx="2"   ry="4.5" transform="rotate(12,5.5,2)"   fill="oklch(0.58 0.22 300)"/>
-              <ellipse cx="0"    cy="4" rx="5"   ry="7"   fill="oklch(0.58 0.22 300)"/>
-              <ellipse cx="0"    cy="5" rx="2.9" ry="4.5" fill="rgba(230,237,245,0.42)"/>
-              <circle  cx="0"    cy="-4.5" r="4.5"        fill="oklch(0.58 0.22 300)"/>
-              <circle  cx="-1.9" cy="-5"   r="1"  fill="rgba(230,237,245,0.92)"/>
-              <circle  cx=" 1.9" cy="-5"   r="1"  fill="rgba(230,237,245,0.92)"/>
-              <path    d="M-1.1,-3 L0,-1.6 L1.1,-3 Z" fill="oklch(0.88 0.14 68)"/>
-              <circle  cx="-2.2" cy="11" r="1.2" fill="oklch(0.88 0.14 68)"/>
-              <circle  cx=" 2.2" cy="11" r="1.2" fill="oklch(0.88 0.14 68)"/>
+            <g transform="translate(176,90)">
+              <ellipse cx="0" cy="4.5" rx="6.2" ry="8" fill="oklch(0.58 0.22 300)"/>
+              <ellipse cx="0" cy="5.5" rx="3.2" ry="4.8" fill="rgba(230,237,245,0.45)"/>
+              <circle cx="0" cy="-3.2" r="4.6" fill="oklch(0.58 0.22 300)"/>
             </g>
-
-            <!-- ── Penguin: FRIEND B (purple, smaller/cuter) at (152, 60) — shared city ── -->
-            <g transform="translate(152,54)">
-              <ellipse cx="-4.5" cy="2" rx="1.7" ry="3.8" transform="rotate(-12,-4.5,2)" fill="oklch(0.58 0.22 300)"/>
-              <ellipse cx=" 4.5" cy="2" rx="1.7" ry="3.8" transform="rotate(12,4.5,2)"   fill="oklch(0.58 0.22 300)"/>
-              <ellipse cx="0"    cy="3" rx="4.5" ry="6.2" fill="oklch(0.58 0.22 300)"/>
-              <ellipse cx="0"    cy="4" rx="2.6" ry="4"   fill="rgba(230,237,245,0.42)"/>
-              <circle  cx="0"    cy="-4" r="4"             fill="oklch(0.58 0.22 300)"/>
-              <circle  cx="-1.7" cy="-4.5" r="0.95" fill="rgba(230,237,245,0.92)"/>
-              <circle  cx=" 1.7" cy="-4.5" r="0.95" fill="rgba(230,237,245,0.92)"/>
-              <path    d="M-1,-2.8 L0,-1.4 L1,-2.8 Z" fill="oklch(0.88 0.14 68)"/>
-              <circle  cx="-2" cy="9.5" r="1.1" fill="oklch(0.88 0.14 68)"/>
-              <circle  cx=" 2" cy="9.5" r="1.1" fill="oklch(0.88 0.14 68)"/>
+            <g transform="translate(152,55)">
+              <ellipse cx="0" cy="4" rx="5.5" ry="7" fill="oklch(0.58 0.22 300)"/>
+              <ellipse cx="0" cy="5" rx="2.7" ry="4" fill="rgba(230,237,245,0.45)"/>
+              <circle cx="0" cy="-2.8" r="4" fill="oklch(0.58 0.22 300)"/>
             </g>
           </svg>
         </div>
@@ -886,40 +917,25 @@
       <a href="https://xubing0602.github.io/whc_explorer/" target="_blank" rel="noopener" class="card c6">
         <span class="arrow">↗</span>
         <div class="art" aria-hidden="true">
-          <!-- cultural + natural heritage split -->
           <svg viewBox="0 0 240 150" fill="none">
-            <!-- Shared ground line -->
-            <line x1="8" y1="118" x2="232" y2="118" stroke="rgba(230,237,245,0.10)" stroke-width="1"/>
-            <!-- ── LEFT: Cultural — Greek Temple (cyan) ── -->
-            <g stroke="oklch(0.86 0.14 200)" stroke-width="1.2">
-              <path d="M 14,70 L 55,40 L 96,70 Z" fill="rgba(32,155,175,0.10)"/>
-              <rect x="14" y="70" width="82" height="6" fill="rgba(32,155,175,0.14)"/>
-              <rect x="17" y="76" width="5" height="32" fill="rgba(32,155,175,0.08)"/>
-              <rect x="30" y="76" width="5" height="32" fill="rgba(32,155,175,0.08)"/>
-              <rect x="43" y="76" width="5" height="32" fill="rgba(32,155,175,0.08)"/>
-              <rect x="57" y="76" width="5" height="32" fill="rgba(32,155,175,0.08)"/>
-              <rect x="70" y="76" width="5" height="32" fill="rgba(32,155,175,0.08)"/>
-              <rect x="83" y="76" width="5" height="32" fill="rgba(32,155,175,0.08)"/>
-              <rect x="12" y="108" width="86" height="5" fill="rgba(32,155,175,0.12)"/>
-              <rect x="8"  y="113" width="94" height="5" fill="rgba(32,155,175,0.10)"/>
+            <path d="M14 118H226" stroke="rgba(230,237,245,0.12)" stroke-width="1.2" stroke-linecap="round"/>
+            <g stroke="oklch(0.86 0.14 200)" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M24 72H102" stroke-width="1.7"/>
+              <path d="M26 72L63 42L100 72" stroke-width="1.7" fill="rgba(32,155,175,0.11)"/>
+              <path d="M28 76H98" stroke-width="1.5"/>
+              <path d="M32 76V108M45 76V108M58 76V108M71 76V108M84 76V108M96 76V108" stroke-width="1.4"/>
+              <path d="M22 108H104M18 113H108" stroke-width="1.6"/>
             </g>
-            <!-- ── RIGHT: Natural — Mountains + Pines (purple) ── -->
-            <g stroke="oklch(0.74 0.17 300)" stroke-width="1.2">
-              <path d="M 130,118 L 160,65 L 186,118 Z" fill="rgba(120,80,200,0.07)"/>
-              <path d="M 196,118 L 218,72 L 235,118 Z" fill="rgba(120,80,200,0.07)"/>
-              <path d="M 148,118 L 185,30 L 222,118 Z" fill="rgba(120,80,200,0.10)"/>
-              <path d="M 170,73 L 185,30 L 201,73 Z" fill="rgba(230,237,245,0.15)" stroke-width="0.8"/>
-              <path d="M 130,118 L 136,104 L 142,118 Z" fill="rgba(120,80,200,0.22)"/>
-              <path d="M 131,111 L 136,99  L 141,111 Z" fill="rgba(120,80,200,0.22)"/>
-              <path d="M 141,118 L 147,106 L 153,118 Z" fill="rgba(120,80,200,0.22)"/>
-              <path d="M 142,112 L 147,101 L 152,112 Z" fill="rgba(120,80,200,0.22)"/>
-              <path d="M 218,118 L 224,104 L 230,118 Z" fill="rgba(120,80,200,0.22)"/>
-              <path d="M 219,111 L 224,99  L 229,111 Z" fill="rgba(120,80,200,0.22)"/>
+            <g stroke="oklch(0.74 0.17 300)" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M126 118L160 62L194 118Z" stroke-width="1.6" fill="rgba(120,80,200,0.08)"/>
+              <path d="M154 118L186 34L220 118Z" stroke-width="1.7" fill="rgba(120,80,200,0.12)"/>
+              <path d="M170 75L186 34L202 75Z" stroke-width="1.2" fill="rgba(230,237,245,0.15)"/>
+              <path d="M128 118L135 104L142 118M132 111L135 103L138 111" stroke-width="1.1"/>
+              <path d="M214 118L221 104L228 118M218 111L221 103L224 111" stroke-width="1.1"/>
             </g>
-            <!-- Centre: UNESCO-style emblem (square = cultural, circle = natural) -->
-            <g opacity="0.32">
-              <rect x="113" y="48" width="14" height="14" stroke="oklch(0.86 0.14 200)" fill="none" stroke-width="0.9"/>
-              <circle cx="120" cy="70" r="8" stroke="oklch(0.74 0.17 300)" fill="none" stroke-width="0.9"/>
+            <g opacity="0.36">
+              <rect x="112" y="48" width="15" height="15" rx="2" stroke="oklch(0.86 0.14 200)" stroke-width="1"/>
+              <circle cx="120" cy="70" r="8.4" stroke="oklch(0.74 0.17 300)" stroke-width="1"/>
             </g>
           </svg>
         </div>
@@ -1087,6 +1103,47 @@
       card.style.setProperty('--my', (e.clientY - r.top) + 'px');
     });
   });
+
+  // mobile section dropdown
+  const mobileNav = document.getElementById('mobile-nav');
+  const mobileNavTrigger = document.getElementById('mobile-nav-trigger');
+  const mobileNavLabel = document.getElementById('mobile-nav-label');
+  if(mobileNav && mobileNavTrigger){
+    mobileNavTrigger.addEventListener('click', () => {
+      const isOpen = mobileNav.classList.toggle('open');
+      mobileNavTrigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    mobileNav.querySelectorAll('a').forEach((a) => {
+      a.addEventListener('click', () => {
+        mobileNav.classList.remove('open');
+        mobileNavTrigger.setAttribute('aria-expanded', 'false');
+      });
+    });
+    document.addEventListener('click', (e) => {
+      if(!mobileNav.contains(e.target)){
+        mobileNav.classList.remove('open');
+        mobileNavTrigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+    // track active section to update trigger label
+    const sections = ['about','experience','projects','skills','contact'];
+    const sectionEls = sections.map(id => document.getElementById(id)).filter(Boolean);
+    const sectionLinks = mobileNav.querySelectorAll('a[data-section]');
+    const sectionObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          const id = entry.target.id;
+          const link = mobileNav.querySelector(`a[data-section="${id}"]`);
+          sectionLinks.forEach(a => a.classList.remove('active'));
+          if(link){
+            link.classList.add('active');
+            if(mobileNavLabel) mobileNavLabel.textContent = id;
+          }
+        }
+      });
+    }, { rootMargin: '-40% 0px -50% 0px' });
+    sectionEls.forEach(el => sectionObs.observe(el));
+  }
 </script>
 
 </body>

@@ -65,6 +65,16 @@ The tweaks panel (bottom-right) toggles accent, font, density, and grid at runti
 
 ## Changelog
 
+### 2026-04-30 — Mobile Nav Dropdown Refinement
+
+- Trigger label now dynamically updates to show the current section name as the user scrolls (e.g. `/ experience`)
+- Slash prefix styled in cyan to match the desktop nav's `<span class="slash">/</span>` treatment
+- Each menu item now shows a two-digit section index (`01`–`05`) in `--ink-faint`, mirroring the `section-title .idx` style used in section headings
+- Menu item hover and active states use cyan text + subtle cyan-tinted background, consistent with the desktop nav link hover behavior
+- Active section link highlighted automatically via `IntersectionObserver` (same observer used for scroll-reveal)
+- Dropdown panel: stronger backdrop blur (`16px`), faint inset border highlight, and tighter drop shadow for a more polished look
+- Trigger at rest uses `--ink-dim`; transitions to `--ink` when open, with cyan border glow
+
 ### 2026-04-29 — Project Card SVG Redesigns
 
 **Sakura Map**
